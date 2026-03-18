@@ -1,0 +1,23 @@
+{
+  "name": "18.03.2026",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/biasilva-a/codificacao-backend#readme",
+  "bugs": {
+    "url": "https://github.com/biasilva-a/codificacao-backend/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/biasilva-a/codificacao-backend.git"
+  },
+  "license": "ISC",
+  "author": "biasilva-a",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node --watch ./src/server.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
