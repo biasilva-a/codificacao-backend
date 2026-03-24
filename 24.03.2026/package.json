@@ -1,0 +1,13 @@
+
+{
+  "name": "pratos",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node --watch ./src/server.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
