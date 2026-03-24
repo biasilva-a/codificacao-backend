@@ -9,6 +9,15 @@ const getALL = () => {
     ];
 };
 
+const getById = (id) => {
+    const numId = Number(id);
+    if (Number.isNaN(numId)) return null;
+    
+    const pratos = getALL();
+    return pratos.find(p => p.id === numId) ?? null;
+};
+
 export const pratoservice = {
-    getALL
+    getALL,
+    getById
 };
