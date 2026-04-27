@@ -16,7 +16,7 @@ async function writeFruits(fruits) {
 
 async function getAllFruits() {
   const fruits = await readFruits();
-  console.log("Lista de frutas carregada.");
+  console.log("\nLista de frutas carregada.");
   return fruits;
 }
 
@@ -25,11 +25,11 @@ async function getFruitById(id) {
   const fruit = fruits.find(f => f.id === Number(id));
 
   if (!fruit) {
-    console.log("Nenhuma fruta encontrada com esse ID.");
+    console.log("\nNenhuma fruta encontrada com esse ID.");
     return null;
   }
 
-  console.log("Fruta encontrada pelo ID.");
+  console.log("\nFruta encontrada pelo ID.");
   return fruit;
 }
 
@@ -41,11 +41,11 @@ async function getFruitByName(nome) {
   );
 
   if (!fruit) {
-    console.log("Nenhuma fruta encontrada com esse nome.");
+    console.log("\nNenhuma fruta encontrada com esse nome.");
     return null;
   }
 
-  console.log("Fruta encontrada pelo nome.");
+  console.log("\nFruta encontrada pelo nome.");
   return fruit;
 }
 
@@ -57,7 +57,7 @@ async function createFruit(nome, cor, preco) {
   );
 
   if (alreadyExists) {
-    console.log("Erro: já existe uma fruta com esse nome.");
+    console.log("\nErro: já existe uma fruta com esse nome.");
     return null;
   }
 
@@ -71,7 +71,7 @@ async function createFruit(nome, cor, preco) {
   fruits.push(newFruit);
   await writeFruits(fruits);
 
-  console.log("Fruta criada com sucesso.");
+  console.log("\nFruta criada com sucesso.");
   return newFruit;
 }
 
@@ -80,7 +80,7 @@ async function updateFruit(id, nome, cor, preco) {
   const index = fruits.findIndex(f => f.id === Number(id));
 
   if (index === -1) {
-    console.log("Erro: fruta não encontrada para atualização.");
+    console.log("\nErro: fruta não encontrada para atualização.");
     return null;
   }
 if (nome) {
@@ -91,7 +91,7 @@ if (nome) {
   );
 
   if (alreadyExists) {
-    console.log("Erro: já existe outra fruta com esse nome.");
+    console.log("\nErro: já existe outra fruta com esse nome.");
     return null;
   }
 }
@@ -104,7 +104,7 @@ if (nome) {
 
   await writeFruits(fruits);
 
-  console.log("Fruta atualizada com sucesso.");
+  console.log("\nFruta atualizada com sucesso.");
   return fruits[index];
 }
 
@@ -113,14 +113,14 @@ async function deleteFruit(id) {
   const index = fruits.findIndex(f => f.id === Number(id));
 
   if (index === -1) {
-    console.log("Erro: fruta não encontrada para remoção.");
+    console.log("\nErro: fruta não encontrada para remoção.");
     return false;
   }
 
   fruits.splice(index, 1);
   await writeFruits(fruits);
 
-  console.log("Fruta removida com sucesso.");
+  console.log("\nFruta removida com sucesso.");
   return true;
 }
 
@@ -132,7 +132,7 @@ async function resetFruits() {
   ];
 
   await writeFruits(initialFruits);
-  console.log("Arquivo resetado com sucesso.");
+  console.log("\nArquivo resetado com sucesso.");
 }
 
 async function main() {
