@@ -146,7 +146,7 @@ async function main() {
 
   console.log(await createFruit("Banana", "Amarelo", 7.5));
 
-  console.log(await updateFruit(1, "Maçã Gala", "Vermelha", 9.0));
+  console.log(await updateFruit(1, "Maçã", "Vermelha", 9.0));
 
   console.log(await deleteFruit(2));
 
