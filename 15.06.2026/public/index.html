@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Delivery Chat - Client</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-pink-50 h-screen flex flex-col items-center justify-center p-4">
+
+  <!-- troca do perfil encima -->
+  <div class="w-full max-w-md mb-3 flex gap-2">
+    <button id="btnAna" onclick="setRole('customer')"
+      class="flex-1 py-2 rounded-lg text-sm font-semibold border border-gray-300 bg-white text-gray-700">
+      Cliente (Thayla)
+    </button>
+    <button id="btnBia" onclick="setRole('agent')"
+      class="flex-1 py-2 rounded-lg text-sm font-semibold border border-gray-300 bg-white text-gray-700">
+      Atendente (Bianca)
+    </button>
+  </div>
+
+  <div class="w-full max-w-md bg-white rounded-lg shadow-md overflow-hidden flex flex-col h-[500px]">
+    <div class="bg-pink-500 text-white p-4">
+      <h1 class="text-lg font-bold">Chat de Entrega - Pedido #101</h1>
+      <div class="flex justify-between items-center mt-1">
+        <p id="participantes" class="text-sm opacity-90">Participantes: Carregando...</p>
+        <span class="bg-pink-100 text-pink-800 text-[10px] font-bold px-2 py-0.5 rounded">ATIVO</span>
+      </div>
+    </div>
+
+    <div id="mensagens" class="flex-1 p-4 overflow-y-auto space-y-3 bg-pink-50 flex flex-col">
+    </div>
+
+    <div class="p-3 bg-white border-t flex gap-2">
+      <input id="inputMsg" type="text" placeholder="Digite uma mensagem..."
+        class="flex-1 border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-200">
+      <button id="btnEnviar"
+        class="bg-pink-500 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-pink-600">Enviar</button>
+    </div>
+  </div>
+
+  <script>
+    const orderId = 'order-101';
+    const mensagensDiv = document.getElementById('mensagens');
+    const participantesEl = document.getElementById('participantes');
+    const inputMsgEl = document.getElementById('inputMsg');
+    const btnEnviarEl = document.getElementById('btnEnviar');
+
+    // coisas pra controlar o perfil atual;
+    let currentRole = 'customer';
+
+    function setRole(role) {
+      currentRole = role;
+      const btnCustomer = document.getElementById('btnAna');
+      const btnAgent = document.getElementById('btnBia');
+
+      // placeholder ajustado para cada perfil;
+      if (role === 'customer') {
+        btnCustomer.className = "flex-1 py-2 rounded-lg text-sm font-semibold bg-pink-500 text-white border-pink-500";
+        btnAgent.className = "flex-1 py-2 rounded-lg text-sm font-semibold bg-white text-gray-700 border-gray-300 hover:bg-gray-50";
+        inputMsgEl.placeholder = "Digite uma mensagem como 'Cliente (Thayla)'...";
+      } else {
+        btnCustomer.className = "flex-1 py-2 rounded-lg text-sm font-semibold bg-white text-gray-700 border-gray-300 hover:bg-gray-50";
+        btnAgent.className = "flex-1 py-2 rounded-lg text-sm font-semibold bg-pink-500 text-white border-pink-500";
+        inputMsgEl.placeholder = "Digite uma mensagem como 'Atendente (Bianca)'...";
+      }
+    }
+
+    // renderiza o chat
+    function renderChat(chat) {
+      participantesEl.textContent = `${chat.customer?.name || 'Cliente'} e ${chat.agent?.name || 'Atendente'}`;
+      mensagensDiv.innerHTML = '';
+
+      chat.messages.forEach(msg => {
+        const div = document.createElement('div');
+        div.className = `max-w-[80%] rounded-lg p-3 text-sm shadow-sm `;
+
+        if (msg.sender === 'customer') {
+          div.className += 'bg-pink-400 text-white self-end ml-auto';
+        } else if (msg.sender === 'agent') {
+          div.className += 'bg-white border text-gray-800 border-pink-100 self-start mr-auto';
+        } else {
+          div.className += 'bg-pink-300 text-white text-center mx-auto my-2 w-full max-w-xs';
+        }
+
+        div.innerHTML = `
+          <p class="font-bold text-[11px] opacity-75">${msg.sender.toUpperCase()}</p>
+          <p>${msg.text}</p>
+          <span class="text-[10px] block text-right mt-1 opacity-60">${msg.timestamp}</span>
+        `;
+        mensagensDiv.appendChild(div);
+      });
+      mensagensDiv.scrollTop = mensagensDiv.scrollHeight;
+    }
+
+    async function loadChat() {
+      try {
+        const res = await fetch(`/api/chats/${orderId}`);
+        if (!res.ok) throw new Error('Falha ao carregar o chat');
+        const chat = await res.json();
+        renderChat(chat);
+      } catch (error) {
+        console.error("Erro na requisição do chat:", error);
+      }
+    }
+
+    async function sendMessage() {
+      const text = inputMsgEl.value.trim();
+      if (!text) return;
+
+      const res = await fetch(`/api/chats/${orderId}/messages`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sender: currentRole, text })
+      });
+
+      if (res.ok) {
+        inputMsgEl.value = '';
+        loadChat();
+      }
+    }
+
+    btnEnviarEl.addEventListener('click', sendMessage);
+    inputMsgEl.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
+
+    setRole('customer');
+    loadChat();
+    setInterval(loadChat, 2000);
+  </script>
+</body>
+
+</html>
