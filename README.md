@@ -55,3 +55,7 @@ Para testar direto no navegador, digite: http://localhost:3000/animal
 Se aparecer o seu array de animais (Cachorro e Gato), a porta está aberta e respondendo corretamente;
 
 Se o navegador ficar carregando e der erro, verifique se o número da porta no código é o mesmo que você digitou na URL.
+
+# Aula 06/07/2026
+
+Primeiro, baixamos a pasta com os arquivos HTML e JavaScript e, em seguida, instalamos o Node.js junto com as dependências do Express e Express-Session. Logo depois, ajustamos o arquivo package.json adicionando a propriedade "type": "module". Com o ambiente pronto, criamos a estrutura das pastas, configuramos o arquivo server.js e realizamos os testes iniciais, que funcionaram perfeitamente. Dando continuidade, configuramos o arquivo mockDb.js com os mesmos dados que estavam no database.js. Por fim, criamos a pasta routes e configuramos o arquivo produtos.js, mas essa parte acabou não funcionando perfeitamente como esperado.
